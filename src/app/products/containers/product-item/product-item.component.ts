@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { tap, take } from 'rxjs/operators';
 
 import { Pizza, Topping } from '../../models';
 import * as fromStore from './../../store';
@@ -11,9 +12,10 @@ import * as fromToppings from './../../store/toppings';
 @Component({
   selector: 'app-product-item',
   templateUrl: './product-item.component.html',
-  styleUrls: ['./product-item.component.scss']
+  styleUrls: ['./product-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductItemComponent implements OnInit {
+export class ProductItemComponent implements OnInit, OnDestroy {
 
   pizza$: Observable<Pizza>;
   visualise$: Observable<Pizza>;
@@ -24,55 +26,36 @@ export class ProductItemComponent implements OnInit {
   ) {
     this.pizza$ = this.store.select(fromPizzas.getSelectedPizza);
     this.toppings$ = this.store.select(fromToppings.getToppingsCollection);
+    this.visualise$ = this.store.select(fromToppings.getPizzaVisualised);
   }
 
   ngOnInit() {
-    const action = new fromToppings.LoadToppings();
+  }
+
+  ngOnDestroy() {
+    const action = new fromToppings.VisualiseToppings({ids: []});
     this.store.dispatch(action);
-    // const pizzaId = this.route.snapshot.params.pizzaId;
-    // if (pizzaId === undefined) {
-    //   this.pizza = {};
-    //   this.loadToppings();
-    // }else {
-    //   this.pizzasService.getPizza(parseInt(pizzaId, 10))
-    //   .subscribe(pizza => {
-    //     this.pizza = pizza;
-    //     this.loadToppings();
-    //   });
-    // }
   }
 
   onSelect(toppings: Topping[]) {
     const ids = toppings.map(topping => topping.id);
     const action = new fromToppings.VisualiseToppings({ids});
     this.store.dispatch(action);
-    // this.visualise = { ...this.pizza, toppings };
   }
 
-  onCreate(event: Pizza) {
-    // this.pizzasService.createPizza(event)
-    // .subscribe(pizza => {
-    //   this.router.navigate([`/products/`]);
-    // });
+  onCreate(pizza: Pizza) {
+    const action = new fromPizzas.CreatePizza({pizza});
+    this.store.dispatch(action);
   }
 
-  onUpdate(event: Pizza) {
-    // this.pizzasService.updatePizza(event).subscribe(() => {
-    //   this.router.navigate([`/products`]);
-    // });
+  onUpdate(pizza: Pizza) {
+    const action = new fromPizzas.UpdatePizza({pizza});
+    this.store.dispatch(action);
   }
 
-  onRemove(event: Pizza) {
-    // this.pizzasService.removePizza(event).subscribe(() => {
-    //   this.router.navigate([`/products`]);
-    // });
-  }
-
-  loadToppings() {
-    // this.toppingsService.getToppings()
-    // .subscribe(toppings => {
-    //   this.toppings = toppings;
-    // });
+  onRemove(pizza: Pizza) {
+    const action = new fromPizzas.RemovePizza({pizza});
+    this.store.dispatch(action);
   }
 
 }

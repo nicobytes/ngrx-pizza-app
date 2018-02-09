@@ -8,7 +8,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 
 import { RootRoutingModule } from './root-routing.module';
-import { reducers, CustomRouterSerializer } from './store/root.state';
+import { reducers, CustomRouterSerializer, RouterEffects } from './store';
 import { AppComponent } from './containers/app/app.component';
 
 import { environment } from './../../environments/environment';
@@ -22,7 +22,7 @@ import { environment } from './../../environments/environment';
     BrowserAnimationsModule,
     RootRoutingModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([RouterEffects]),
     StoreRouterConnectingModule,
     (!environment.production) ? StoreDevtoolsModule.instrument() : [],
   ],

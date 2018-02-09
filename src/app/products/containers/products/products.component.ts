@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -9,7 +9,8 @@ import * as fromStore from './../../store';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  styleUrls: ['./products.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsComponent implements OnInit {
 
@@ -22,8 +23,6 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const action = new fromPizzas.LoadPizzas();
-    this.store.dispatch(action);
   }
 
 }

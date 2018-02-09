@@ -18,6 +18,7 @@ const PIZZA_TOPPINGS_ACCESSOR = {
   selector: 'app-pizza-toppings',
   templateUrl: './pizza-toppings.component.html',
   styleUrls: ['./pizza-toppings.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PIZZA_TOPPINGS_ACCESSOR],
 })
 export class PizzaToppingsComponent implements ControlValueAccessor, OnChanges  {

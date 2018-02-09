@@ -15,6 +15,9 @@ import { ProductItemComponent } from './containers/product-item/product-item.com
 
 import { PizzasService } from './services/pizzas.service';
 import { ToppingsService } from './services/topping.service';
+import { PizzasGuard } from './guards/pizzas.guard';
+import { PizzasItemGuard } from './guards/pizza-item.guard';
+import { ToppingsGuard } from './guards/toppings.guard';
 import * as fromStore from './store';
 import * as fromPizzas from './store/pizzas';
 import * as fromToppings from './store/toppings';
@@ -42,7 +45,10 @@ import * as fromToppings from './store/toppings';
   exports: [],
   providers: [
     PizzasService,
-    ToppingsService
+    ToppingsService,
+    PizzasGuard,
+    PizzasItemGuard,
+    ToppingsGuard
   ],
 })
 export class ProductsModule { }

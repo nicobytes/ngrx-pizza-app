@@ -7,6 +7,8 @@ const routes: Routes = [
     loadChildren: './../products/products.module#ProductsModule',
   },
   { path: '', pathMatch: 'full', redirectTo: 'products' },
+  { path: '*', pathMatch: 'full', redirectTo: 'products' },
+  { path: '**', pathMatch: 'full', redirectTo: 'products' },
 ];
 
 @NgModule({

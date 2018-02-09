@@ -24,6 +24,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-pizza-form',
   templateUrl: './pizza-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./pizza-form.component.scss']
 })
 export class PizzaFormComponent implements OnInit, OnChanges {
@@ -57,9 +58,7 @@ export class PizzaFormComponent implements OnInit, OnChanges {
     }
     this.form
       .get('toppings')
-      .valueChanges.pipe(
-        // map(toppings => toppings.map((topping: Topping) => topping.id))
-      )
+      .valueChanges
       .subscribe(value => this.selected.emit(value));
   }
 
