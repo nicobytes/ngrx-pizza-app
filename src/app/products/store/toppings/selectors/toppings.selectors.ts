@@ -1,9 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-// import * as fromRoot from './../../../../root/store/root.state';
 import * as fromPizzas from './../../pizzas';
 import { Topping } from './../../../models';
-import { ToppingsState } from './../toppings.state';
+import { ToppingsState, toppingsAdapter } from './../toppings.state';
 import { getProductsState } from './../../products.selector';
 
 export const getToppingsState = createSelector(
@@ -13,17 +12,17 @@ export const getToppingsState = createSelector(
 
 export const getToppingsEntities = createSelector(
   getToppingsState,
-  toppingsState => toppingsState.entities
+  toppingsAdapter.getSelectors().selectEntities
 );
 
-export const getToppingsCollection = createSelector(
-  getToppingsEntities,
-  entities => Object.keys(entities).map(id => entities[parseInt(id, 10)])
-);
-
-export const getToppingsLoading = createSelector(
+export const getAllToppings = createSelector(
   getToppingsState,
-  toppingsState => toppingsState.loading
+  toppingsAdapter.getSelectors().selectAll
+);
+
+export const getTotalToppings = createSelector(
+  getToppingsState,
+  toppingsAdapter.getSelectors().selectTotal
 );
 
 export const getToppingsErrors = createSelector(
@@ -48,11 +47,3 @@ export const getPizzaVisualised = createSelector(
     };
   }
 );
-
-// export const getSelectedPizza = createSelector(
-//   getPizzasEntities,
-//   fromRoot.getRouterState,
-//   (entities, router): Pizza => {
-//     return router.state && entities[router.state.params.pizzaId];
-//   }
-// );

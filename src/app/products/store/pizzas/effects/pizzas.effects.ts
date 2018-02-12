@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Effect, Actions } from '@ngrx/effects';
+import { Effect, Actions, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
@@ -13,8 +13,8 @@ export class PizzasEffects {
 
   @Effect()
   loadPizzas$ = this.actions$
-  .ofType(fromActions.LOAD_PIZZAS)
   .pipe(
+    ofType(fromActions.LOAD_PIZZAS),
     switchMap(() =>
       this.pizzasService
       .getPizzas()
@@ -26,7 +26,8 @@ export class PizzasEffects {
   );
 
   @Effect()
-  createPizza$ = this.actions$.ofType(fromActions.CREATE_PIZZA).pipe(
+  createPizza$ = this.actions$.pipe(
+    ofType(fromActions.CREATE_PIZZA),
     map((action: fromActions.CreatePizza) => action.payload),
     switchMap(payload => {
       return this.pizzasService
@@ -40,20 +41,22 @@ export class PizzasEffects {
 
 
   @Effect()
-  updatePizza$ = this.actions$.ofType(fromActions.UPDATE_PIZZA).pipe(
+  updatePizza$ = this.actions$.pipe(
+    ofType(fromActions.UPDATE_PIZZA),
     map((action: fromActions.UpdatePizza) => action.payload),
     switchMap(payload => {
       return this.pizzasService
         .updatePizza(payload.pizza)
         .pipe(
-          map(pizza => new fromActions.UpdatePizzaSuccess({pizza})),
+          map(pizza => new fromActions.UpdatePizzaSuccess({id: pizza.id, changes: pizza})),
           catchError(error => of(new fromActions.UpdatePizzaFail({errors: [error]})))
         );
     })
   );
 
   @Effect()
-  removePizza$ = this.actions$.ofType(fromActions.REMOVE_PIZZA).pipe(
+  removePizza$ = this.actions$.pipe(
+    ofType(fromActions.REMOVE_PIZZA),
     map((action: fromActions.RemovePizza) => action.payload),
     switchMap(payload => {
       return this.pizzasService
@@ -67,12 +70,12 @@ export class PizzasEffects {
 
   @Effect()
   handlePizzaSuccess$ = this.actions$
-    .ofType(
-      fromActions.CREATE_PIZZA_SUCCESS,
-      fromActions.UPDATE_PIZZA_SUCCESS,
-      fromActions.REMOVE_PIZZA_SUCCESS
-    )
     .pipe(
+      ofType(
+        fromActions.CREATE_PIZZA_SUCCESS,
+        fromActions.UPDATE_PIZZA_SUCCESS,
+        fromActions.REMOVE_PIZZA_SUCCESS
+      ),
       map(pizza => {
         return new fromRoot.Go({
           path: ['/products'],

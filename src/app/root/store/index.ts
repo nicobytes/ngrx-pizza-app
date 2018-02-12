@@ -1,3 +1,4 @@
 export * from './root.state';
-export * from './router.actions';
-export * from './router.effects';
+export * from './actions/router.actions';
+export * from './effects/router.effects';
+export * from './selectors/router.selectors';

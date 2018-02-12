@@ -3,7 +3,7 @@ import * as fromPizzas from './pizzas';
 import * as fromToppings from './toppings';
 
 export interface ProductsState {
-  pizzas: fromPizzas.PizzaState;
+  pizzas: fromPizzas.PizzasState;
   toppings: fromToppings.ToppingsState;
 }
 

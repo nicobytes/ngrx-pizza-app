@@ -23,8 +23,13 @@ import { environment } from './../../environments/environment';
     RootRoutingModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([RouterEffects]),
-    StoreRouterConnectingModule,
-    (!environment.production) ? StoreDevtoolsModule.instrument() : [],
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router'
+    }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [
     {provide: RouterStateSerializer, useClass: CustomRouterSerializer }

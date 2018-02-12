@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
-import * as fromRoot from './../../../../root/store/root.state';
+import * as fromRoot from './../../../../root/store';
 import { Pizza } from './../../../models';
-import { PizzaState } from './../pizzas.state';
+import { PizzasState, pizzasAdapter } from './../pizzas.state';
 import { getProductsState } from './../../products.selector';
 
 export const getPizzasState = createSelector(
@@ -12,12 +12,17 @@ export const getPizzasState = createSelector(
 
 export const getPizzasEntities = createSelector(
   getPizzasState,
-  pizzasState => pizzasState.entities
+  pizzasAdapter.getSelectors().selectEntities
 );
 
-export const getPizzasCollection = createSelector(
-  getPizzasEntities,
-  entities => Object.keys(entities).map(id => entities[parseInt(id, 10)])
+export const getAllPizzas = createSelector(
+  getPizzasState,
+  pizzasAdapter.getSelectors().selectAll
+);
+
+export const getTotalPizzas = createSelector(
+  getPizzasState,
+  pizzasAdapter.getSelectors().selectTotal
 );
 
 export const getPizzasLoading = createSelector(
@@ -29,7 +34,6 @@ export const getPizzasErrors = createSelector(
   getPizzasState,
   pizzasState => pizzasState.errors
 );
-
 
 export const getSelectedPizza = createSelector(
   getPizzasEntities,

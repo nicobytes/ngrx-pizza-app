@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { tap, take } from 'rxjs/operators';
 
@@ -24,9 +24,9 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<fromStore.ProductsState>
   ) {
-    this.pizza$ = this.store.select(fromPizzas.getSelectedPizza);
-    this.toppings$ = this.store.select(fromToppings.getToppingsCollection);
-    this.visualise$ = this.store.select(fromToppings.getPizzaVisualised);
+    this.pizza$ = this.store.pipe(select(fromPizzas.getSelectedPizza));
+    this.toppings$ = this.store.pipe(select(fromToppings.getAllToppings));
+    this.visualise$ = this.store.pipe(select(fromToppings.getPizzaVisualised));
   }
 
   ngOnInit() {

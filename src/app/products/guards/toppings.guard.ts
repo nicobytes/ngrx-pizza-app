@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { tap, filter, take, switchMap, catchError, map } from 'rxjs/operators';
@@ -22,8 +22,9 @@ export class ToppingsGuard implements CanActivate {
   }
 
   checkStore(): Observable<boolean> {
-    return this.store.select(fromToppins.getToppingsCollection)
+    return this.store
     .pipe(
+      select(fromToppins.getAllToppings),
       tap(pizzas => {
         if (pizzas.length === 0) {
           this.store.dispatch(new fromToppins.LoadToppings());

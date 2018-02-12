@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
 
 import { Pizza } from './../../../models/pizza.model';
 
@@ -59,7 +60,7 @@ export class UpdatePizzaFail implements Action {
 
 export class UpdatePizzaSuccess implements Action {
   readonly type = UPDATE_PIZZA_SUCCESS;
-  constructor(public payload: {pizza: Pizza}) {}
+  constructor(public payload: Update<Pizza>) {}
 }
 
 // remove pizza

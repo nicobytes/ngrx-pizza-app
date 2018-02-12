@@ -1,13 +1,12 @@
 import * as fromActions from './../actions/toppings.actions';
-import { ToppingsState } from './../toppings.state';
+import { ToppingsState, toppingsAdapter } from './../toppings.state';
 import { Topping } from './../../../models/topping.model';
 
-const initialState: ToppingsState = {
-  entities: {},
+const initialState: ToppingsState = toppingsAdapter.getInitialState({
   errors: [],
   loading: false,
   selectedToppings: []
-};
+});
 
 export function reducer(
   state = initialState,
@@ -22,17 +21,9 @@ export function reducer(
     }
 
     case fromActions.LOAD_TOPPINGS_SUCCESS: {
-
-      const toppings = action.payload.toppings
-      .reduce((entities: {[id: number ]: Topping}, topping: Topping) => {
-        return {
-          ...entities,
-          [topping.id]: topping
-        };
-      }, {});
+      const toppings = action.payload.toppings;
       return {
-        ...state,
-        entities: toppings,
+        ...toppingsAdapter.addAll(toppings, state),
         errors: [],
         loading: false,
       };
